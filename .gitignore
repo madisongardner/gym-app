@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.sqlite*
+*.db
+*.zip
+rp-training-data*.json
+analysis.json
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
