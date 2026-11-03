@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {validateExport,mergeBlocks,blankSession,numberValue,demo} from '../web/model.mjs';
+test('rejects broken exports before storage',()=>{assert.throws(()=>validateExport({}));assert.throws(()=>validateExport([{id:1,weeks:[{days:[{}]}]}]));assert.throws(()=>validateExport([...demo,...demo]));});
+test('reimport updates same ID without duplicates',()=>{assert.equal(mergeBlocks(demo,demo).length,1);});
+test('new session resets completion and prefers saved targets without changing RP source',()=>{const day={exercises:[{name:'Row',sets:[{weight:85,reps:8,weightTarget:87.5,repsTarget:9,status:'complete'}]}]};const s=blankSession(day,{unit:'lb'});assert.equal(s.exercises[0].sets[0].weight,87.5);assert.equal(s.exercises[0].sets[0].done,false);s.exercises[0].sets[0].weight=50;assert.equal(day.exercises[0].sets[0].weight,85);});
+test('invalid numeric inputs rejected',()=>{for(const n of [-1,NaN,Infinity])assert.throws(()=>numberValue(n));assert.equal(numberValue(''), '');assert.equal(numberValue('2.5'),2.5);});
